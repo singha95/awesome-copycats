@@ -32,7 +32,7 @@ theme.border_focus                              = "#0099CC"
 theme.taglist_fg_focus                          = "#FFFFFF"
 theme.tasklist_bg_normal                        = "#222222"
 theme.tasklist_fg_focus                         = "#4CB7DB"
-theme.menu_height                               = dpi(20)
+theme.menu_height                               = dpi(25)
 theme.menu_width                                = dpi(160)
 theme.menu_icon_size                            = dpi(32)
 theme.awesome_icon                              = theme.icon_dir .. "/awesome_icon_white.png"
@@ -122,6 +122,7 @@ theme.cal = lain.widget.cal({
     }
 })
 
+
 -- Mail IMAP check
 --[[ commented because it needs to be set before use
 theme.mail = lain.widget.imap({
@@ -145,72 +146,72 @@ theme.mail = lain.widget.imap({
 --]]
 
 -- MPD
-local mpd_icon = awful.widget.launcher({ image = theme.mpdl, command = theme.musicplr })
-local prev_icon = wibox.widget.imagebox(theme.prev)
-local next_icon = wibox.widget.imagebox(theme.nex)
-local stop_icon = wibox.widget.imagebox(theme.stop)
-local pause_icon = wibox.widget.imagebox(theme.pause)
-local play_pause_icon = wibox.widget.imagebox(theme.play)
-theme.mpd = lain.widget.mpd({
-    settings = function ()
-        if mpd_now.state == "play" then
-            mpd_now.artist = mpd_now.artist:upper():gsub("&.-;", string.lower)
-            mpd_now.title = mpd_now.title:upper():gsub("&.-;", string.lower)
-            widget:set_markup(markup.font("Roboto 4", " ")
-                              .. markup.font(theme.taglist_font,
-                              " " .. mpd_now.artist
-                              .. " - " ..
-                              mpd_now.title .. "  ") .. markup.font("Roboto 5", " "))
-            play_pause_icon:set_image(theme.pause)
-        elseif mpd_now.state == "pause" then
-            widget:set_markup(markup.font("Roboto 4", " ") ..
-                              markup.font(theme.taglist_font, " MPD PAUSED  ") ..
-                              markup.font("Roboto 5", " "))
-            play_pause_icon:set_image(theme.play)
-        else
-            widget:set_markup("")
-            play_pause_icon:set_image(theme.play)
-        end
-    end
-})
-local musicbg = wibox.container.background(theme.mpd.widget, theme.bg_focus, gears.shape.rectangle)
-local musicwidget = wibox.container.margin(musicbg, dpi(0), dpi(0), dpi(5), dpi(5))
+-- local mpd_icon = awful.widget.launcher({ image = theme.mpdl, command = theme.musicplr })
+-- local prev_icon = wibox.widget.imagebox(theme.prev)
+-- local next_icon = wibox.widget.imagebox(theme.nex)
+-- local stop_icon = wibox.widget.imagebox(theme.stop)
+-- local pause_icon = wibox.widget.imagebox(theme.pause)
+-- local play_pause_icon = wibox.widget.imagebox(theme.play)
+-- theme.mpd = lain.widget.mpd({
+--     settings = function ()
+--         if mpd_now.state == "play" then
+--             mpd_now.artist = mpd_now.artist:upper():gsub("&.-;", string.lower)
+--             mpd_now.title = mpd_now.title:upper():gsub("&.-;", string.lower)
+--             widget:set_markup(markup.font("Roboto 4", " ")
+--                               .. markup.font(theme.taglist_font,
+--                               " " .. mpd_now.artist
+--                               .. " - " ..
+--                               mpd_now.title .. "  ") .. markup.font("Roboto 5", " "))
+--             play_pause_icon:set_image(theme.pause)
+--         elseif mpd_now.state == "pause" then
+--             widget:set_markup(markup.font("Roboto 4", " ") ..
+--                               markup.font(theme.taglist_font, " MPD PAUSED  ") ..
+--                               markup.font("Roboto 5", " "))
+--             play_pause_icon:set_image(theme.play)
+--         else
+--             widget:set_markup("")
+--             play_pause_icon:set_image(theme.play)
+--         end
+--     end
+-- })
+-- local musicbg = wibox.container.background(theme.mpd.widget, theme.bg_focus, gears.shape.rectangle)
+-- local musicwidget = wibox.container.margin(musicbg, dpi(0), dpi(0), dpi(5), dpi(5))
 
-musicwidget:buttons(my_table.join(awful.button({ }, 1,
-function () awful.spawn(theme.musicplr) end)))
-prev_icon:buttons(my_table.join(awful.button({}, 1,
-function ()
-    os.execute("mpc prev")
-    theme.mpd.update()
-end)))
-next_icon:buttons(my_table.join(awful.button({}, 1,
-function ()
-    os.execute("mpc next")
-    theme.mpd.update()
-end)))
-stop_icon:buttons(my_table.join(awful.button({}, 1,
-function ()
-    play_pause_icon:set_image(theme.play)
-    os.execute("mpc stop")
-    theme.mpd.update()
-end)))
-play_pause_icon:buttons(my_table.join(awful.button({}, 1,
-function ()
-    os.execute("mpc toggle")
-    theme.mpd.update()
-end)))
+-- musicwidget:buttons(my_table.join(awful.button({ }, 1,
+-- function () awful.spawn(theme.musicplr) end)))
+-- prev_icon:buttons(my_table.join(awful.button({}, 1,
+-- function ()
+--     os.execute("mpc prev")
+--     theme.mpd.update()
+-- end)))
+-- next_icon:buttons(my_table.join(awful.button({}, 1,
+-- function ()
+--     os.execute("mpc next")
+--     theme.mpd.update()
+-- end)))
+-- stop_icon:buttons(my_table.join(awful.button({}, 1,
+-- function ()
+--     play_pause_icon:set_image(theme.play)
+--     os.execute("mpc stop")
+--     theme.mpd.update()
+-- end)))
+-- play_pause_icon:buttons(my_table.join(awful.button({}, 1,
+-- function ()
+--     os.execute("mpc toggle")
+--     theme.mpd.update()
+-- end)))
 
--- Battery
-local bat = lain.widget.bat({
-    settings = function()
-        bat_header = " Bat "
-        bat_p      = bat_now.perc .. " "
-        if bat_now.ac_status == 1 then
-            bat_p = bat_p .. "Plugged "
-        end
-        widget:set_markup(markup.font(theme.font, markup(blue, bat_header) .. bat_p))
-    end
-})
+-- -- Battery
+-- local bat = lain.widget.bat({
+--     settings = function()
+--         bat_header = " Bat "
+--         bat_p      = bat_now.perc .. " "
+--         if bat_now.ac_status == 1 then
+--             bat_p = bat_p .. "Plugged "
+--         end
+--         widget:set_markup(markup.font(theme.font, markup(blue, bat_header) .. bat_p))
+--     end
+-- })
 
 -- / fs
 --[[ commented because it needs Gio/Glib >= 2.54
@@ -220,20 +221,20 @@ theme.fs = lain.widget.fs({
 --]]
 
 -- ALSA volume bar
-theme.volume = lain.widget.alsabar({
-    notification_preset = { font = "Monospace 9"},
-    --togglechannel = "IEC958,3",
-    width = dpi(80), height = dpi(10), border_width = dpi(0),
-    colors = {
-        background = "#383838",
-        unmute     = "#80CCE6",
-        mute       = "#FF9F9F"
-    },
-})
-theme.volume.bar.paddings = dpi(0)
-theme.volume.bar.margins = dpi(5)
-local volumewidget = wibox.container.background(theme.volume.bar, theme.bg_focus, gears.shape.rectangle)
-volumewidget = wibox.container.margin(volumewidget, dpi(0), dpi(0), dpi(5), dpi(5))
+-- theme.volume = lain.widget.alsabar({
+--     notification_preset = { font = "Monospace 9"},
+--     --togglechannel = "IEC958,3",
+--     width = dpi(80), height = dpi(10), border_width = dpi(0),
+--     colors = {
+--         background = "#383838",
+--         unmute     = "#80CCE6",
+--         mute       = "#FF9F9F"
+--     },
+-- })
+-- theme.volume.bar.paddings = dpi(0)
+-- theme.volume.bar.margins = dpi(5)
+-- local volumewidget = wibox.container.background(theme.volume.bar, theme.bg_focus, gears.shape.rectangle)
+-- volumewidget = wibox.container.margin(volumewidget, dpi(0), dpi(0), dpi(5), dpi(5))
 
 -- CPU
 local cpu_icon = wibox.widget.imagebox(theme.cpu)
@@ -247,16 +248,16 @@ local cpubg = wibox.container.background(cpu.widget, theme.bg_focus, gears.shape
 local cpuwidget = wibox.container.margin(cpubg, dpi(0), dpi(0), dpi(5), dpi(5))
 
 -- Net
-local netdown_icon = wibox.widget.imagebox(theme.net_down)
-local netup_icon = wibox.widget.imagebox(theme.net_up)
-local net = lain.widget.net({
-    settings = function()
-        widget:set_markup(markup.font("Roboto 1", " ") .. markup.font(theme.font, net_now.received .. " - "
-                          .. net_now.sent) .. markup.font("Roboto 2", " "))
-    end
-})
-local netbg = wibox.container.background(net.widget, theme.bg_focus, gears.shape.rectangle)
-local networkwidget = wibox.container.margin(netbg, dpi(0), dpi(0), dpi(5), dpi(5))
+-- local netdown_icon = wibox.widget.imagebox(theme.net_down)
+-- local netup_icon = wibox.widget.imagebox(theme.net_up)
+-- local net = lain.widget.net({
+--     settings = function()
+--         widget:set_markup(markup.font("Roboto 1", " ") .. markup.font(theme.font, net_now.received .. " - "
+--                           .. net_now.sent) .. markup.font("Roboto 2", " "))
+--     end
+-- })
+-- local netbg = wibox.container.background(net.widget, theme.bg_focus, gears.shape.rectangle)
+-- local networkwidget = wibox.container.margin(netbg, dpi(0), dpi(0), dpi(5), dpi(5))
 
 -- Weather
 theme.weather = lain.widget.weather({
@@ -269,14 +270,14 @@ local mylauncher = awful.widget.button({ image = theme.awesome_icon_launcher })
 mylauncher:connect_signal("button::press", function() awful.util.mymainmenu:toggle() end)
 
 -- Separators
-local first = wibox.widget.textbox('<span font="Roboto 7"> </span>')
-local spr_small = wibox.widget.imagebox(theme.spr_small)
-local spr_very_small = wibox.widget.imagebox(theme.spr_very_small)
-local spr_right = wibox.widget.imagebox(theme.spr_right)
-local spr_bottom_right = wibox.widget.imagebox(theme.spr_bottom_right)
-local spr_left = wibox.widget.imagebox(theme.spr_left)
-local bar = wibox.widget.imagebox(theme.bar)
-local bottom_bar = wibox.widget.imagebox(theme.bottom_bar)
+-- local first = wibox.widget.textbox('<span font="Roboto 7"> </span>')
+-- local spr_small = wibox.widget.imagebox(theme.spr_small)
+-- local spr_very_small = wibox.widget.imagebox(theme.spr_very_small)
+-- local spr_right = wibox.widget.imagebox(theme.spr_right)
+-- local spr_bottom_right = wibox.widget.imagebox(theme.spr_bottom_right)
+-- local spr_left = wibox.widget.imagebox(theme.spr_left)
+-- local bar = wibox.widget.imagebox(theme.bar)
+-- local bottom_bar = wibox.widget.imagebox(theme.bottom_bar)
 
 local barcolor  = gears.color({
     type  = "linear",
@@ -320,7 +321,8 @@ function theme.at_screen_connect(s)
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons, { bg_focus = theme.bg_focus, shape = gears.shape.rectangle, shape_border_width = 5, shape_border_color = theme.tasklist_bg_normal, align = "center" })
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = dpi(32) })
+    s.mywibox = awful.wibar({ position = "top", screen = s, height = dpi(36) })
+    
 
     -- Add widgets to the wibox
     s.mywibox:setup {
